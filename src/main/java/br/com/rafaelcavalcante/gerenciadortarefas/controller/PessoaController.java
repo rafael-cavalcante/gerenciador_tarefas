@@ -2,11 +2,13 @@ package br.com.rafaelcavalcante.gerenciadortarefas.controller;
 
 import br.com.rafaelcavalcante.gerenciadortarefas.model.Pessoa;
 import br.com.rafaelcavalcante.gerenciadortarefas.model.dto.PessoaDTO;
+import br.com.rafaelcavalcante.gerenciadortarefas.model.dto.PessoaHorasDTO;
 import br.com.rafaelcavalcante.gerenciadortarefas.repository.PessoaRepository;
 import br.com.rafaelcavalcante.gerenciadortarefas.service.PessoaService;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,10 +58,22 @@ public class PessoaController {
 
         if (optionalPessoa.isPresent()) {
             this.pessoaRepository.deleteById(id);
-            
+
             return optionalPessoa;
         } else {
             throw new RuntimeException("Pessoa não encontrada com id " + id);
         }
+    }
+
+    @GetMapping("/gastos")
+    public List<PessoaHorasDTO> listarPessoasGastos(
+            @RequestParam String nome,
+            @RequestParam String dataInicio,
+            @RequestParam String dataFim) {
+
+        LocalDate inicio = LocalDate.parse(dataInicio);
+        LocalDate fim = LocalDate.parse(dataFim);
+
+        return this.pessoaRepository.findPessoaHorasByNomeAndPeriodo(nome, inicio, fim);
     }
 }
