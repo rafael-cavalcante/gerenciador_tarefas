@@ -48,4 +48,18 @@ public class PessoaController {
             throw new RuntimeException("Pessoa não encontrada com id " + id);
         }
     }
+
+    @DeleteMapping("{id}")
+    @Transactional
+    public Optional<Pessoa> deletarPessoa(@PathVariable Long id) {
+        Optional<Pessoa> optionalPessoa = this.pessoaRepository.findById(id);
+
+        if (optionalPessoa.isPresent()) {
+            this.pessoaRepository.deleteById(id);
+            
+            return optionalPessoa;
+        } else {
+            throw new RuntimeException("Pessoa não encontrada com id " + id);
+        }
+    }
 }
