@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tarefas")
@@ -25,5 +26,20 @@ public class TarefaController {
     @GetMapping("/pendentes")
     public List<Tarefa> listarTarefasPendentes() {
         return this.terefaRepository.findTop3ByPessoaIsNullOrderByPrazoAsc();
+    }
+
+    @PutMapping("/finalizar/{id}")
+    @Transactional
+    public Tarefa finalizarTarefa(@PathVariable Long id) {
+        Optional<Tarefa> optionalTarefa = this.terefaRepository.findById(id);
+
+        if (optionalTarefa.isPresent()) {
+            Tarefa tarefaExistente = optionalTarefa.get();
+            tarefaExistente.setFinalizada(true);
+
+            return this.terefaRepository.save(tarefaExistente);
+        } else {
+            throw new RuntimeException("Tarefa não encontrada com id " + id);
+        }
     }
 }
