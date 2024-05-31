@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -29,5 +30,22 @@ public class PessoaController {
     @GetMapping
     public List<PessoaDTO> listarPessoas() {
         return this.pessoaService.listarPessoa();
+    }
+
+    @PutMapping("{id}")
+    @Transactional
+    public Pessoa atualizarPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
+        Optional<Pessoa> optionalPessoa = this.pessoaRepository.findById(id);
+
+        if (optionalPessoa.isPresent()) {
+            Pessoa pessoaExistente = optionalPessoa.get();
+            pessoaExistente.setNome(pessoa.getNome());
+            pessoaExistente.setDepartamento(pessoa.getDepartamento());
+            pessoaExistente.setTarefas(pessoa.getTarefas());
+
+            return this.pessoaRepository.save(pessoaExistente);
+        } else {
+            throw new RuntimeException("Pessoa não encontrada com id " + id);
+        }
     }
 }
