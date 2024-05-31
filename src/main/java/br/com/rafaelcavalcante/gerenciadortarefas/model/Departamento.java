@@ -1,4 +1,4 @@
-package br.com.rafaelcavalcante.gerenciadortarefas.modal;
+package br.com.rafaelcavalcante.gerenciadortarefas.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,18 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
-public class Pessoa {
+public class Departamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tarefa> tarefas;
-    @ManyToOne
-    @JoinColumn(name = "departamento_id")
-    private Departamento departamento;
+    @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pessoa> pessoas;
 }

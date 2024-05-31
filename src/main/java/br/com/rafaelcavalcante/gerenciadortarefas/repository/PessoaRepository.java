@@ -1,4 +1,7 @@
 package br.com.rafaelcavalcante.gerenciadortarefas.repository;
 
-public interface PessoaRepository {
+import br.com.rafaelcavalcante.gerenciadortarefas.model.Pessoa;
+import org.springframework.data.repository.CrudRepository;
+
+public interface PessoaRepository extends CrudRepository<Pessoa, Long> {
 }

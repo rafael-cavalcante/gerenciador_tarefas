@@ -1,4 +1,4 @@
-package br.com.rafaelcavalcante.gerenciadortarefas.modal;
+package br.com.rafaelcavalcante.gerenciadortarefas.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
