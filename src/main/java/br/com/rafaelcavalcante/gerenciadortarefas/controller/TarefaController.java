@@ -2,7 +2,9 @@ package br.com.rafaelcavalcante.gerenciadortarefas.controller;
 
 import br.com.rafaelcavalcante.gerenciadortarefas.model.Tarefa;
 import br.com.rafaelcavalcante.gerenciadortarefas.repository.TarefaRepository;
+import br.com.rafaelcavalcante.gerenciadortarefas.service.TarefaService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +14,11 @@ import java.util.Optional;
 @RequestMapping("/tarefas")
 public class TarefaController {
     private TarefaRepository terefaRepository;
+    private TarefaService terefaService;
 
-    public TarefaController(TarefaRepository terefaRepository){
+    public TarefaController(TarefaRepository terefaRepository, TarefaService terefaService){
         this.terefaRepository = terefaRepository;
+        this.terefaService = terefaService;
     }
 
     @PostMapping
@@ -41,5 +45,11 @@ public class TarefaController {
         } else {
             throw new RuntimeException("Tarefa não encontrada com id " + id);
         }
+    }
+
+    @PutMapping("/alocar/{tarefaId}")
+    public Tarefa alocarPessoaNaTarefa(@PathVariable Long tarefaId, @RequestParam Long pessoaId) {
+        Tarefa tarefaAlocada = this.terefaService.alocarPessoaNaTarefa(tarefaId, pessoaId);
+        return tarefaAlocada;
     }
 }
