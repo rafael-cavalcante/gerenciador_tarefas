@@ -31,7 +31,7 @@ public class DepartamentoController {
 
     @PutMapping("{id}")
     @Transactional
-    public Departamento atualizarDepartamento( @PathVariable Long id, @RequestBody Departamento departamento) {
+    public Departamento atualizarDepartamento(@PathVariable Long id, @RequestBody Departamento departamento) {
         Optional<Departamento> optionalDepartamento = this.departamentoRepository.findById(id);
 
         if (optionalDepartamento.isPresent()) {
